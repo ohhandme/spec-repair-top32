@@ -1,0 +1,46 @@
+{
+  "architecture": "TOP32_v2",
+  "batch_windows_per_update": 1,
+  "common_C_initial_tensor_sha256": null,
+  "epoch_orders_sha256": "d3c06dd0106ad1c8402b03c072a30e6ffe973861edcccde671be079b8e344904",
+  "epochs": 5,
+  "gradient_accumulation": 1,
+  "group": "TOP32_v2",
+  "initial_path": "/data/autoresearch/classic-261114-task59-fdbf2f8a/matrix-fc65585b/initial/TOP32_v2.safetensors",
+  "initial_provenance": "fresh_seed42_no_pretrained_repair_checkpoint",
+  "initial_sha256": "436ff2f9a6509426b95f950157df1e2aa5cbba4cb94482a619b19b2ecc962d25",
+  "initial_tensor_sha256": "e8cce8616426b387fc8237e35cb59f3a4633fb4845649c4ef12486f7d932748b",
+  "loss": "per_window_valid_normalized_CE",
+  "main_weight_selection": "epoch5_original_rule",
+  "mode": "F-CURRENT-TOP32",
+  "model_bindings": "first4/freeze.json draft_manifest plus wave2/freeze.json target bindings",
+  "optimizer": {
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-08,
+    "kind": "AdamW",
+    "lr": 0.0001,
+    "weight_decay": 0.01
+  },
+  "original_method": "V10FourArmHead",
+  "partition_lock_sha256": "1c30bc0494c7ed8cc2d6f55a3bd0b7e2380609563a4eb26b17276389328e058b",
+  "position_weights": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "secondary_weight_selection": "503_request_equal_calibration_CE; keep_separate",
+  "seed": 42,
+  "short_full_gate_count": 0,
+  "status": "CPU_prepared_no_GPU_dispatch",
+  "storage_adaptation": "A100 saved BF16 exactly promoted; old FP16 artifact identity is NOT claimed",
+  "total_updates": 783440,
+  "trainable_parameters": 7643875
+}
