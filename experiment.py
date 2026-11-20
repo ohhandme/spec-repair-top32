@@ -9,6 +9,8 @@ from native_layout import DATA, HERE, V5, digest, install, preflight, read_json,
 
 
 GROUP = "TOP32_v2"
+TIE_HEAD = HERE / "tie_v1" / "matrix_heads.py"
+TIE_SHA256 = "dc00b2b4ef433f273d1b807871f9e738e6b104312b0ee60480d6817567d6efab"
 
 
 def position_config(cfg, loss):
@@ -52,6 +54,7 @@ def configure_case(out, loss, freeze):
         raise ValueError("training order differs")
     bound = dict(freeze)
     bound["files"] = {**freeze["files"], str(runtime_config): digest(runtime_config), str(Path(__file__).resolve()): digest(Path(__file__))}
+    bound["files"][str(TIE_HEAD.resolve())] = TIE_SHA256
     bound["priority"] = [GROUP]
     bound["top32_loss"] = loss
     bound["top32_selection"] = "one secondary checkpoint selected by equal-token calibration CE"
@@ -62,6 +65,12 @@ def configure_case(out, loss, freeze):
 def run_case(out, runtime_matrix, phase):
     sys.path[:0] = [str(V5), str(V5.parent), str(DATA / "Spec_v2-main")]
     import common
+
+    # Pin the versioned module before runtime prepends historical search roots.
+    sys.path.insert(0, str(TIE_HEAD.parent))
+    import matrix_heads
+    if Path(matrix_heads.__file__).resolve() != TIE_HEAD.resolve() or digest(TIE_HEAD) != TIE_SHA256:
+        raise ValueError("incorrect tie-aware matrix head")
 
     common.ROOT = out
     common.MATRIX = runtime_matrix
@@ -98,6 +107,8 @@ def main():
     parser.add_argument("--out", type=Path)
     parser.add_argument("--verify-hashes", action="store_true")
     args = parser.parse_args()
+    if digest(TIE_HEAD) != TIE_SHA256:
+        raise ValueError("tie-aware matrix head source differs")
     files = read_json(HERE / "bundled-files.json")
     if args.phase == "install":
         install(files)

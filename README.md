@@ -19,3 +19,5 @@ python experiment.py eval --out /srv/spec-runs/top32
 临时训练配置、断点和结果位于 `/srv/spec-runs/top32/front`。使用等权对照时，在三个运行命令上加 `--loss equal`，结果位于 `equal`。两种配置共享初始权重、训练顺序、题单和预算，都按相同的等权校准交叉熵挑选一套权重来评估。评估逐题检查最终输出与封存的 Target 序列完全一致，汇报总接受 token 除以总验证轮数。
 
 这是加权候补配置。已在本机核对冻结源码、原载入行为和两种权重配置。实际 BF16 冒烟和完整评估等待独立 A100。
+
+窗口 87758 的修订使用仓内 `tie_v1/matrix_heads.py`，其 SHA 随新输出的 runtime_freeze.json 绑定。使用新的输出目录（如 /data/Task75-Top32-tie-v1），保留旧目录。原 /data 下的冻结源码继续按原哈希安装和校验。
